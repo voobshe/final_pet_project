@@ -27,12 +27,15 @@ from telegram.ext import (
 
 class LisaBot:
     """
-    todo: add description
+    This class asks the user to send a photo of the product price tag,
+    accepts a photo of the product price tag, and processes it.
+
+    Methods
+    -------
+    run()
+        Start pooling routine
     """
     def __init__(self, bot_key, katusha_part):
-        """
-        todo: add description
-        """
         self.application = Application.builder().token(BOT_KEY).build()
 
         self.application.add_handler(CommandHandler("start", LisaBot.start))
@@ -42,24 +45,27 @@ class LisaBot:
 
     async def start(update: Update, context)->None:
         """
-        todo: add description
+        This method asks the user to send the price tag of the product.
         """
         #self.logger.info(f"User {update.effective_user.full_name} started the bot")
         await update.message.reply_text('Отправь фотографию ценника.')
 
     async def handle_photo(update: Update, context):
         """
-        todo: add description
+        This method accepts photo.
         """
         #self.logger.info(f"Фото получено от: {update.effective_user.full_name}")
         await update.message.reply_text('Я обрабатываю фотографию ценника')
 
     async def handle_text(update: Update, context):
+        """
+        This method asks the user to send a photo of the product price tag, if the user sent text instead of a photo.
+        """
         #self.logger.info(f"Текст получен от: {update.effective_user.full_name}: {update.message.text}")
-        await update.message.reply_text('Пожалуйста, отправьте фотографию ценника.')
+        await update.message.reply_text('Пожалуйста, отправьте именно фотографию ценника.')
        
     def run(self):
         """
-        todo: add decriprtion
+        This method starts the bot.
         """
         self.application.run_polling(allowed_updates=Update.ALL_TYPES)
