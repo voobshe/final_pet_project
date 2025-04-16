@@ -172,3 +172,5 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+# contain wolf gemini api key 
+wolf_bot_key.py
