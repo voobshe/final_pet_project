@@ -1,10 +1,14 @@
-from google import genai
+import google.generativeai as genai
 from google.genai import types
 import PIL.Image
 import io
 from dataclasses import dataclass
+import requests
 from wolf_bot_key import wolf_api_key
+import json
 
+ip = requests.get('https://api.ipify.org').text
+print(f"Ваш внешний IP: {ip}")
 
 @dataclass
 class Product:
@@ -27,7 +31,8 @@ class Katusha:
         
     """
     def __init__(self, key:str):
-        self.client = genai.Client(key)
+        genai.configure(api_key=key)
+        self.client = genai.GenerativeModel("gemini-2.0-flash")
 
     def decode(self, image:str)->Product:
         # Открываем изображение
@@ -49,15 +54,24 @@ class Katusha:
         compressed_image = PIL.Image.open(image_bytes)
 
         # Отправляем сжатое изображение в Gemini
-        response = self.client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents=["Напиши стоимость за килограмм", compressed_image]
-        )
+        # # response = self.client.models.generate_content(
+        #     model="gemini-2.0-flash",
+        #     contents=["Напиши название продукта и цену за килограмм", compressed_image]
+        # )
+        response = self.client.generate_content(
+        contents=["Распознай с фотографии название продукта и цену за килограмм. Ответь строго в JSON формате:\n\n{\"name\": \"название\", \"price_per_unit\": число}", compressed_image]
+    )
+        
         # todo преобразовать ответ в название продукта и его цену
+        
         print(response.text)
+    # Парсим JSON-ответ
+        result = json.loads(response.text[8:-4])
+        product = Product(result["name"], result["price_per_unit"])
+        print(product)
 
-        res = Product("Масло", 100)
-        return res
+        # res = Product("Масло", 100)
+        # return res
 
 def main():
     wolf = Katusha(wolf_api_key)
