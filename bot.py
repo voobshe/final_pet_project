@@ -4,6 +4,10 @@ import logging
 # you should generate bot_key.py with BOT_KEY = "your telegram bot key"
 # and put it into gitignore
 from bot_key import BOT_KEY
+from models import User, ProcessingResult
+from db import engine
+
+from sqlalchemy.orm import sessionmaker
 
 from telegram import (
     KeyboardButton,
@@ -23,7 +27,7 @@ from telegram.ext import (
     PollAnswerHandler,
     PollHandler,
     filters,
-    CallbackContext,
+    CallbackContext
 )
 
 class LisaBot:
@@ -43,6 +47,7 @@ class LisaBot:
     """
     def __init__(self, bot_key, katusha_part):
         self.application = Application.builder().token(BOT_KEY).build()
+        self.Session = sessionmaker(bind=engine)
 
         self.application.add_handler(CommandHandler("start", LisaBot.start))
         self.application.add_handler(CommandHandler("clear", LisaBot.clear_data))
