@@ -174,3 +174,4 @@ cython_debug/
 .pypirc
 # contain wolf gemini api key 
 wolf_bot_key.py
+bot_key.py
