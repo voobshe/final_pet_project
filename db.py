@@ -1,20 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-
-
-# #!!!!!!!!!!!!!!!!!!!!!!!!!!!! УБЕРИ КЛЮЧ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-# engine = create_engine(
-#     'postgresql://postgres:.....@lyrically-happy-rudd.data-1.use1.tembo.io:5432/postgres'
-# )
-# db_session = scoped_session(sessionmaker(bind=engine))
-
-# class Base(DeclarativeBase):
-#     pass
+from bot_key import DB_PASS
 
 DB_USER = "postgres"
-DB_PASS = "4FvehKuU78GM1XC8"
 DB_HOST = "lyrically-happy-rudd.data-1.use1.tembo.io"
 DB_PORT = "5432"
 DB_NAME = "postgres"
