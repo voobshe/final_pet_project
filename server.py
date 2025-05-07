@@ -3,6 +3,8 @@
 from bot_key import BOT_KEY
 import asyncio
 import logging
+from gemini_ocr import Katusha, Product
+from wolf_bot_key import wolf_api_key
 
 # you should generate bot_key.py with BOT_KEY = "your telegram bot key"
 # and put it into gitignore
@@ -22,15 +24,13 @@ from telegram.ext import (
     filters,
     CallbackContext
 )
-from bot import start, clear_data, calculate, handle_photo, handle_text
+from bot import start, clear_data, calculate, handle_photo, handle_text, best_product_command
 
 def main():
     """
     TODO: add description
     """
     global BOT_KEY
-    #TODO добавить катюшин обработчик изображений
-    print(BOT_KEY)
     bot = ApplicationBuilder().token(BOT_KEY).build()
 
     bot.add_handler(CommandHandler("start", start))
@@ -38,6 +38,11 @@ def main():
     bot.add_handler(CommandHandler("calc", calculate))
     bot.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+    bot.add_handler(CommandHandler("best", best_product_command))
+    # Bot ctor is long op, so it's should be done once at session start
+    # price tracker will be stored in foxbot data
+    price_tracker = Katusha(key=wolf_api_key)
+    bot.bot_data = {"pt":price_tracker}
 
     photo_data = list()
     user_data = dict()
