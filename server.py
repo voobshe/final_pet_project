@@ -39,6 +39,9 @@ def main():
     bot.add_handler(MessageHandler(filters.PHOTO, handle_photo))
     bot.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
 
+    price_tracker = Katusha(key=wolf_api_key)
+    bot.bot_data = {"pt", price_tracker}
+
     photo_data = list()
     user_data = dict()
     # katusha = katusha_part
