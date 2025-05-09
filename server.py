@@ -12,6 +12,8 @@ from wolf_bot_key import wolf_api_key
 from sqlalchemy.orm import sessionmaker
 
 from telegram.constants import ParseMode
+from telegram import BotCommand
+
 
 
 from telegram.ext import (
